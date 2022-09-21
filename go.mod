@@ -1,3 +1,3 @@
-module doittikorn.com/go-starter
+module doittikorn.dev/go-starter
 
 go 1.19

@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"doittikorn.com/go-starter/banana"
+	"doittikorn.dev/go-starter/imports"
 )
 
 func main() {
 	fmt.Println("Hello, World!")
-	banana.Main()
-	banana.Gogo()
+	fmt.Println(imports.Import2Banana("test"))
+	fmt.Println(imports.Import2Coconut("test "))
 }
