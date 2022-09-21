@@ -1,4 +1,4 @@
-package main
+package variable
 
 import (
 	"fmt"
@@ -21,11 +21,7 @@ const (
 )
 
 // basic var run on runtime
-var (
-	test = "TAI"
-)
 
-func main() {
-	fmt.Println("test")
-	fmt.Println(test)
+func ExportShow() {
+	fmt.Println(TB)
 }
