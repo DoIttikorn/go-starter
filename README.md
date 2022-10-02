@@ -1,1 +1,1 @@
-# golang-starter
+# go-starter
