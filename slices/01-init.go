@@ -35,8 +35,10 @@ func main() {
 	println(skills[0])
 	println(skills[1])
 	println(skills[2])
-	println(skills[3])
-	println(skills[4])
-	println(skills[5])
+	// println(skills[3])
+	// println(skills[4])
+	// println(skills[5])
+
+	// println(skills[:])
 
 }
