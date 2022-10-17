@@ -26,8 +26,12 @@ func main() {
 		isSuperHero: true,
 	}
 
-	var mvs []movie
-	mvs = append(mvs, m, m2)
+	mvs := []movie{m, m2}
+
+	// var mvs []movie = []movie{m, m2}
+
+	// var mvs []movie
+	// mvs = append(mvs, m, m2)
 
 	for _, mv := range mvs {
 		fmt.Printf("%+v\n", mv)
