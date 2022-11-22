@@ -1,6 +1,8 @@
 package movie
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func init() {
 	fmt.Println("init movie")
