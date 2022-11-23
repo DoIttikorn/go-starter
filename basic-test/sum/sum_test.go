@@ -4,6 +4,23 @@ import "testing"
 
 func TestSum(t *testing.T) {
 
+	t.Run("should multi parameters", func(t *testing.T) {
+		got := Sum([]int{}...)
+		want := 0
+		if got != want {
+			t.Errorf("got %d want %d", got, want)
+		}
+	})
+
+	t.Run("including sign integer", func(t *testing.T) {
+		want := 7
+		xs := []int{2, 3, 3, -1}
+		got := Sum(xs...)
+		if got != want {
+			t.Errorf("got %d want %d", got, want)
+		}
+	})
+
 	t.Run("should return 3 when input 1 and input 2", func(t *testing.T) {
 		// Arrange
 		want := 3
