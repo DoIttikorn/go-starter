@@ -1,0 +1,8 @@
+mode: set
+github.com/Doittikorn/basic-test/ticket/ticket.go:3.29,4.14 1 1
+github.com/Doittikorn/basic-test/ticket/ticket.go:7.2,7.15 1 1
+github.com/Doittikorn/basic-test/ticket/ticket.go:10.2,10.15 1 1
+github.com/Doittikorn/basic-test/ticket/ticket.go:13.2,13.10 1 1
+github.com/Doittikorn/basic-test/ticket/ticket.go:4.14,6.3 1 1
+github.com/Doittikorn/basic-test/ticket/ticket.go:7.15,9.3 1 1
+github.com/Doittikorn/basic-test/ticket/ticket.go:10.15,12.3 1 1
