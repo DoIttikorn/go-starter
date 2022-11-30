@@ -23,7 +23,13 @@ func discount(c *course) int {
 	// แต่ถ้า return ออกมาเป็น struct ที่ไม่ใช่ pointer จะเป็นค่าที่ถูก copy มาจาก struct นั้น
 }
 
-func (c *course) discount2(d int) int {
+func (c *course) discount(d int) int { // method ที่เป็น pointer จะเปลี่ยนค่าใน struct ที่เรียกใช้
+	c.price = c.price - d
+	fmt.Println("discount", c.price)
+	return c.price
+}
+
+func (c course) discountNoPointer(d int) int { // method ที่ไม่ใช่ pointer จะไม่เปลี่ยนค่าใน struct ที่เรียกใช้
 	c.price = c.price - d
 	fmt.Println("discount", c.price)
 	return c.price
@@ -36,14 +42,18 @@ func main() {
 		instructor: "Mihalis",
 		price:      10000,
 	}
-	fmt.Printf("c: %#v\n", c)
+	fmt.Printf("course begin:\n %#v\n", c)
 
 	d := discount(c) // ส่งค่า address ของ c ไปให้ discount
-	fmt.Println("discount price from func ", d)
-	fmt.Println("struct property price: ", c.price)
+	fmt.Println("discount price from function ", d)
+	fmt.Println("discount price from struct property: ", c.price)
 
-	f := c.discount2(120) // method ที่เป็น pointer จะเปลี่ยนค่าใน struct ที่เรียกใช้
-	fmt.Println("discount price in struct pointer: ", f)
+	minus := 123
+	fmt.Println("number is minus struct: ", minus)
+	f := c.discountNoPointer(minus)
+	// f := c.discount(minus)
+	fmt.Println("discount price in method no pointer: ", f)
+	fmt.Println("discount price in struct pointer: ", c.price)
 
 	fmt.Println("=======================================")
 
