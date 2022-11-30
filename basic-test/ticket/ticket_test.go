@@ -3,6 +3,7 @@ package ticket
 import "testing"
 
 // เป็นการ test โดยอาศัย Boundary values
+// การเขียน test แบบ table test
 func TestTicketPrice(t *testing.T) {
 	tests := []struct {
 		name string
