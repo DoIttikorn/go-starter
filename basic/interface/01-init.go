@@ -25,14 +25,14 @@ func main() {
 
 func show(val any) {
 	// จะมีปัญหาถ้าเราไม่มีการ check type ก่อนใช้งาน
-	i, ตรวจสอบ := val.(int) // แปลงค่า val ให้เป็น int
-	if ตรวจสอบ {
+	i, check := val.(int) // แปลงค่า val ให้เป็น int
+	if check {
 		i = i + 2
 		fmt.Println(i)
 	}
 
-	s, ตรวจสอบอกษร := val.(string) // แปลงค่า val ให้เป็น string
-	if ตรวจสอบอกษร {
+	s, check := val.(string) // แปลงค่า val ให้เป็น string
+	if check {
 		fmt.Println(s)
 	}
 }

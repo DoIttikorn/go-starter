@@ -22,6 +22,11 @@ type movie struct {
 func (m *movie) addVote(rating float64) {
 	m.votes = append(m.votes, rating)
 }
+
+func test(v voter) {
+	fmt.Printf("type:\n%T\nvalue:\n%#v\n", v, v)
+}
+
 func main() {
 
 	eg := &movie{
@@ -35,4 +40,5 @@ func main() {
 
 	vote(eg, 10)
 	fmt.Println("Votes:", eg.votes)
+	test(eg)
 }
