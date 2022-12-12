@@ -27,7 +27,6 @@ var users = []User{
 }
 
 func usersHandler(w http.ResponseWriter, req *http.Request) {
-
 	if req.Method == "GET" {
 		b, err := json.Marshal(users)
 		if err != nil {
@@ -94,12 +93,32 @@ func (l Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) { // function 
 	log.Printf("Server http middleware : %s %s %s %s", r.Method, r.RequestURI, r.Proto, time.Since(start))
 }
 
+// Basic Auth
+func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		u, p, ok := r.BasicAuth()
+		if !ok {
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte("Unauthorized"))
+			return
+		}
+		if u != "dodo" || p != "123456" {
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte("Username or password is incorrect"))
+			return
+		}
+		fmt.Println("AuthMiddleware")
+		next(w, r)
+	}
+
+}
+
 func main() {
 
 	mux := http.NewServeMux()
 	// เราจะใช้ logMiddleware กับ handler ที่เราสร้างขึ้นมา
 
-	mux.HandleFunc("/users", usersHandler)
+	mux.HandleFunc("/users", AuthMiddleware(usersHandler))
 	// http.HandleFunc("/users", logMiddleware(usersHandler))
 	mux.HandleFunc("/health", healthHandler)
 	// http.HandleFunc("/health", logMiddleware(healthHandler))
