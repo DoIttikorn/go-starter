@@ -1,10 +1,14 @@
 # go-starter
 
-## My Goal 
+## My Goal
 
 I will be the Go Developer
 
 ---
+
+## Knowledge
+
+- Anonymous function
 
 ## Reference
 
