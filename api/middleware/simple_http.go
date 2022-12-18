@@ -102,7 +102,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			w.Write([]byte("Unauthorized"))
 			return
 		}
-		if u != "dodo" || p != "123456" {
+		if u != "ittikorn" || p != "1234" {
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Username or password is incorrect"))
 			return
