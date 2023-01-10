@@ -85,8 +85,8 @@ func main() {
 	e := echo.New()
 
 	e.GET("/movies", getAllMoviesHandler)
-	e.GET("/movies", saveMovieHandler)
 	e.GET("/movies/:id", getMovieByIdHandler)
+	e.POST("/movies", saveMovieHandler)
 	port := 2565
 
 	log.Println("Server started on port:", port)
