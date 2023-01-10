@@ -47,7 +47,7 @@ func getUserHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, users)
 }
 
-func main() {
+func server() {
 	e := echo.New()
 
 	e.Use(middleware.Logger())
