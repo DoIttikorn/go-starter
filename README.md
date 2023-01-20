@@ -12,7 +12,7 @@ learn basic go component
 
 ### `basic-project`
 
-starter go project
+learn starter go project
 
 ### `basic-test`
 
@@ -21,6 +21,10 @@ learn test for go ex. unit test
 ### `devops`
 
 learn build docker image and deploy Go application to World Wide Web
+
+### `project`
+
+start project for real world application
 
 ## My Goal
 
