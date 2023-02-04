@@ -23,6 +23,68 @@ type Movie struct {
 
 var db *sql.DB
 
+func updateMovieHandler(c echo.Context) error {
+	imdbID := c.Param("imdbID")
+	movie := new(Movie)
+	// m := &Movie{}
+	if err := c.Bind(movie); err != nil {
+		return err
+	}
+	stmtCheck, err := db.Prepare(`
+	SELECT id, imdbID, title, year, rating, isSuperHero
+	FROM movies
+	WHERE imdbID = ?;
+	`)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	defer stmtCheck.Close()
+	m := Movie{}
+	err = stmtCheck.QueryRow(imdbID).Scan(&m.ID, &m.ImdbID, &m.Title, &m.Year, &m.Rating, &m.IsSuperHero)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	if m.ID == 0 {
+		return c.JSON(http.StatusNotFound, map[string]string{"message": "No rows were returned!"})
+	}
+
+	stmt, err := db.Prepare(`
+	UPDATE movies
+	SET title=?, year=?, rating=?, isSuperHero=?
+	WHERE imdbID=?;
+	`)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	defer stmt.Close()
+	b := fmt.Sprintf("%v", movie.IsSuperHero)
+	_, err = stmt.Exec(movie.Title, movie.Year, movie.Rating, b, imdbID)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	stmtQuery, err := db.Prepare(`
+	SELECT id, imdbID, title, year, rating, isSuperHero
+	FROM movies
+	WHERE imdbID = ?;
+	`)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	defer stmtQuery.Close()
+	m = Movie{}
+	err = stmtQuery.QueryRow(movie.ImdbID).Scan(&m.ID, &m.ImdbID, &m.Title, &m.Year, &m.Rating, &m.IsSuperHero)
+
+	switch err {
+	case nil:
+		return c.JSON(http.StatusOK, m)
+	case sql.ErrNoRows:
+		return c.JSON(http.StatusNotFound, map[string]string{"message": "No rows were returned!"})
+	default:
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+}
+
 func getAllMoviesHandler(c echo.Context) error {
 	year := c.QueryParam("year")
 	movies := []Movie{}
@@ -193,6 +255,7 @@ func main() {
 	e.GET("/movies", getAllMoviesHandler)
 	e.GET("/movies/:id", getMovieByIdHandler)
 	e.POST("/movies", addMovieHandler)
+	e.PUT("/movies/:imdbID", updateMovieHandler)
 
 	e.Logger.Fatal(e.Start(":1323"))
 

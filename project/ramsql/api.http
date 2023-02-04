@@ -6,7 +6,7 @@ POST http://localhost:1323/movies HTTP/1.1
 content-type: application/json
 
 {
-    "imdbID": "The Matrix",
+    "imdbID": "test",
     "title": "The Wachowskis",
     "year": 1998,
     "rating": 8.7,
@@ -20,3 +20,19 @@ GET http://localhost:1323/movies/2 HTTP/1.1
 ###
 
 GET http://localhost:1323/movies?year=1998 HTTP/1.1
+###
+
+GET http://localhost:1323/movies HTTP/1.1
+
+###
+
+PUT http://localhost:1323/movies/test HTTP/1.1
+content-type: application/json
+
+{
+    "imdbID": "test",
+    "title": "The Wachowskis",
+    "year": 1998,
+    "rating": 9.7,
+    "isSuperHero": true
+}
