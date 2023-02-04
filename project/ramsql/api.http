@@ -16,3 +16,7 @@ content-type: application/json
 ###
 
 GET http://localhost:1323/movies/2 HTTP/1.1
+
+###
+
+GET http://localhost:1323/movies?year=1998 HTTP/1.1

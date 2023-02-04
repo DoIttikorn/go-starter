@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/proullon/ramsql/driver"
 )
 
@@ -20,6 +22,77 @@ type Movie struct {
 }
 
 var db *sql.DB
+
+func getAllMoviesHandler(c echo.Context) error {
+	year := c.QueryParam("year")
+	movies := []Movie{}
+
+	if year == "" {
+		stmt, err := db.Prepare(`
+	SELECT id, imdbID, title, year, rating, isSuperHero
+	FROM movies;
+	`)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+		defer stmt.Close()
+		rows, err := stmt.Query()
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+		defer rows.Close()
+		for rows.Next() {
+			var m Movie
+			// m := Movie{}
+			err := rows.Scan(&m.ID, &m.ImdbID, &m.Title, &m.Year, &m.Rating, &m.IsSuperHero)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, err.Error())
+			}
+			movies = append(movies, m)
+		}
+
+		if err := rows.Err(); err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+
+		return c.JSON(http.StatusOK, movies)
+
+	}
+	years, err := strconv.Atoi(year)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	stmt, err := db.Prepare(`
+	SELECT id, imdbID, title, year, rating, isSuperHero
+	FROM movies
+	WHERE year = ?;
+	`)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	defer stmt.Close()
+	rows, err := stmt.Query(years)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var m Movie
+		// m := Movie{}
+		err := rows.Scan(&m.ID, &m.ImdbID, &m.Title, &m.Year, &m.Rating, &m.IsSuperHero)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+		movies = append(movies, m)
+	}
+
+	if err := rows.Err(); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, movies)
+
+}
 
 func getMovieByIdHandler(c echo.Context) error {
 	id := c.Param("id")
@@ -111,12 +184,13 @@ func main() {
 	}
 
 	e := echo.New()
+	e.Use(middleware.Logger())
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(200, "Hello, World!")
 	})
 
-	// e.GET("/movies", getAllMoviesHandler)
+	e.GET("/movies", getAllMoviesHandler)
 	e.GET("/movies/:id", getMovieByIdHandler)
 	e.POST("/movies", addMovieHandler)
 
