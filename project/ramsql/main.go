@@ -21,6 +21,29 @@ type Movie struct {
 
 var db *sql.DB
 
+func getMovieByIdHandler(c echo.Context) error {
+	id := c.Param("id")
+	stmt, err := db.Prepare(`
+	SELECT id, imdbID, title, year, rating, isSuperHero
+	FROM movies
+	WHERE id = ?;
+	`)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	defer stmt.Close()
+	m := Movie{}
+	err = stmt.QueryRow(id).Scan(&m.ID, &m.ImdbID, &m.Title, &m.Year, &m.Rating, &m.IsSuperHero)
+	switch err {
+	case nil:
+		return c.JSON(http.StatusOK, m)
+	case sql.ErrNoRows:
+		return c.JSON(http.StatusNotFound, map[string]string{"message": "No rows were returned!"})
+	default:
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+}
+
 func addMovieHandler(c echo.Context) error {
 	m := new(Movie)
 	// m := &Movie{}
@@ -94,7 +117,7 @@ func main() {
 	})
 
 	// e.GET("/movies", getAllMoviesHandler)
-	// e.GET("/movies/:id", getMovieHandler)
+	e.GET("/movies/:id", getMovieByIdHandler)
 	e.POST("/movies", addMovieHandler)
 
 	e.Logger.Fatal(e.Start(":1323"))

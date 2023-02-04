@@ -12,3 +12,7 @@ content-type: application/json
     "rating": 8.7,
     "isSuperHero": false
 }
+
+###
+
+GET http://localhost:1323/movies/2 HTTP/1.1
