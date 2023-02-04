@@ -1,0 +1,14 @@
+GET http://localhost:1323/ HTTP/1.1
+
+###
+
+POST http://localhost:1323/movies HTTP/1.1
+content-type: application/json
+
+{
+    "imdbID": "The Matrix",
+    "title": "The Wachowskis",
+    "year": 1998,
+    "rating": 8.7,
+    "isSuperHero": false
+}
