@@ -157,18 +157,18 @@ func getAllMoviesHandler(c echo.Context) error {
 }
 
 func getMovieByIdHandler(c echo.Context) error {
-	id := c.Param("id")
+	imdbID := c.Param("imdbID")
 	stmt, err := db.Prepare(`
 	SELECT id, imdbID, title, year, rating, isSuperHero
 	FROM movies
-	WHERE id = ?;
+	WHERE imdbID = ?;
 	`)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	defer stmt.Close()
 	m := Movie{}
-	err = stmt.QueryRow(id).Scan(&m.ID, &m.ImdbID, &m.Title, &m.Year, &m.Rating, &m.IsSuperHero)
+	err = stmt.QueryRow(imdbID).Scan(&m.ID, &m.ImdbID, &m.Title, &m.Year, &m.Rating, &m.IsSuperHero)
 	switch err {
 	case nil:
 		return c.JSON(http.StatusOK, m)
@@ -253,10 +253,10 @@ func main() {
 	})
 
 	e.GET("/movies", getAllMoviesHandler)
-	e.GET("/movies/:id", getMovieByIdHandler)
+	e.GET("/movies/:imdbID", getMovieByIdHandler)
 	e.POST("/movies", addMovieHandler)
 	e.PUT("/movies/:imdbID", updateMovieHandler)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":2565"))
 
 }
