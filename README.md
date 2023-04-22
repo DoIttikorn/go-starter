@@ -10,11 +10,7 @@ learn start server with built-in library and echo library
 
 learn basic go component
 
-### `basic-project`
-
-learn starter go project
-
-### `basic-test`
+### `test`
 
 learn test for go ex. unit test
 
@@ -24,7 +20,7 @@ learn build docker image and deploy Go application to World Wide Web
 
 ### `project`
 
-start project for real world application
+learn starter go project and start project for real world application
 
 ## My Goal
 
